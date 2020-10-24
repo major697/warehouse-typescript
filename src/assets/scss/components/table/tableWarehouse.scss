@@ -1,0 +1,51 @@
+.item {
+  width: 100%;
+  border-collapse: collapse;
+
+  &__head {
+    background-color: hsl(0, 0%, 80%);
+  }
+
+  &__element {
+    font-weight: inherit;
+    font-size: map-get($fontSizes, average);
+    text-align: center;
+    padding: map-get($margins, m2) 0;
+
+    &__buttons {
+      cursor: pointer;
+      border: 1px solid green;
+      background-color: transparent;
+      border-radius: 4px;
+      color: map-get($colors, light);
+      margin: 0 map-get($margins, m1);
+      padding: map-get($margins, m1) map-get($margins, m2);
+      outline: none;
+
+      &:hover {
+        transition: all 0.3s ease-in-out;
+        border-color: hsl(0, 0%, 25%);
+        background-color: green;
+        color: map-get($colors, light) !important;
+      }
+    }
+  }
+
+  &__body {
+    color: map-get($colors, light);
+    background-color: hsl(0, 0%, 25%);
+
+    &:nth-child(even) {
+      background-color: hsl(0, 0%, 22%);
+    }
+
+    &:hover {
+      color: hsl(0, 0%, 25%);
+      background-color: hsl(0, 0%, 80%);
+
+      .item__element__buttons {
+        color: hsl(0, 0%, 25%);
+      }
+    }
+  }
+}

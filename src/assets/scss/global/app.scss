@@ -1,0 +1,8 @@
+.page {
+  max-width: calc(
+    #{map-get($widths, lg)} + 2 * #{map-get($margins, m3)}
+  );
+  margin: 0 auto;
+  padding: 0 map-get($margins, m3);
+  font-family: $fontBook;
+}

@@ -1,0 +1,13 @@
+.cnt {
+  width: 100%;
+}
+
+.item {
+  &__title {
+    width: 100%;
+    text-align: center;
+    font-size: map-get($fontSizes, big);
+    color: map-get($colors, red);
+    margin: map-get($margins, m6) 0;
+  }
+}

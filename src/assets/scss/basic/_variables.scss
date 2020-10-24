@@ -13,7 +13,12 @@ $widths: (
 );
 
 $fontSizes: (
-  big: 32px,
+  least: 10px,
+  small: 13px,
+  normal: 14px,
+  average: 18px,
+  big: 24px,
+  biggest: 32px,
 );
 
 $margins: (
@@ -29,6 +34,7 @@ $margins: (
 
 $colors: (
   red: hsl(0, 69%, 33%),
+  light: hsl(0, 0%, 85%),
 );
 
 $colorsFilter: (
