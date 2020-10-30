@@ -8,23 +8,19 @@
       :table-body="getBooks"
       @remove="remove"
       @update:editItem="editItem = $event"
+      @update:statusEditModal="statusEditModal = true"
     />
     <EditForm
-      v-if="editItem"
+      v-if="statusEditModal"
       :data="editItem"
-      @close="editItem = null"
+      @close="statusEditModal = false"
       @update="updateItem"
     />
   </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  defineAsyncComponent,
-  ComponentPublicInstance,
-} from 'vue'
+import { defineComponent, ref, defineAsyncComponent } from 'vue'
 import TableWarehouse from '@/components/table/TableWarehouse.vue'
 import books from '@/data/books'
 
@@ -46,25 +42,42 @@ export default defineComponent({
     ]
 
     const getBooks = ref(books)
-    const editItem = ref<{ title: string; author: string }>({
+    const statusEditModal = ref(false)
+    const editItem = ref<{
+      id: number
+      title: string
+      author: string
+    }>({
+      id: 0,
       title: '',
       author: '',
     })
 
-    const updateItem = (data: { title: string; author: string }) => {
+    const updateItem = (data: {
+      id: number
+      title: string
+      author: string
+    }) => {
       const { title, author } = data
-      console.log('xxx', editItem.value.author)
 
-      // getBooks.value = getBooks.value.map(book => ({
-      //   ...book,
-      //   title: editItem.value.id === book.id ? title : book.title,
-      //   author: editItem.value.id === book.id ? author : book.author,
-      // }))
+      getBooks.value = getBooks.value.map(book => ({
+        ...book,
+        title: editItem.value.id === book.id ? title : book.title,
+        author: editItem.value.id === book.id ? author : book.author,
+      }))
+      statusEditModal.value = false
     }
 
     const remove = (value: number) => getBooks.value.splice(value, 1)
 
-    return { tableHead, getBooks, remove, editItem, updateItem }
+    return {
+      tableHead,
+      getBooks,
+      remove,
+      statusEditModal,
+      editItem,
+      updateItem,
+    }
   },
 })
 </script>
