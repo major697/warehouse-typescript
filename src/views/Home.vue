@@ -7,19 +7,34 @@
       :table-head="tableHead"
       :table-body="getBooks"
       @remove="remove"
+      @update:editItem="editItem = $event"
+    />
+    <EditForm
+      v-if="editItem"
+      :data="editItem"
+      @close="editItem = null"
+      @update="updateItem"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import {
+  defineComponent,
+  ref,
+  defineAsyncComponent,
+  ComponentPublicInstance,
+} from 'vue'
 import TableWarehouse from '@/components/table/TableWarehouse.vue'
-import books from '@/data/books.ts'
+import books from '@/data/books'
 
 export default defineComponent({
   name: 'Home',
   components: {
     TableWarehouse,
+    EditForm: defineAsyncComponent(() =>
+      import('@/components/forms/EditForm.vue'),
+    ),
   },
   setup() {
     const tableHead: Array<string> = [
@@ -31,12 +46,25 @@ export default defineComponent({
     ]
 
     const getBooks = ref(books)
+    const editItem = ref<{ title: string; author: string }>({
+      title: '',
+      author: '',
+    })
 
-    const remove = (value: number) => {
-      getBooks.value.splice(value, 1)
+    const updateItem = (data: { title: string; author: string }) => {
+      const { title, author } = data
+      console.log('xxx', editItem.value.author)
+
+      // getBooks.value = getBooks.value.map(book => ({
+      //   ...book,
+      //   title: editItem.value.id === book.id ? title : book.title,
+      //   author: editItem.value.id === book.id ? author : book.author,
+      // }))
     }
 
-    return { tableHead, getBooks, remove }
+    const remove = (value: number) => getBooks.value.splice(value, 1)
+
+    return { tableHead, getBooks, remove, editItem, updateItem }
   },
 })
 </script>

@@ -1,0 +1,14 @@
+.input {
+  margin: map-get($margins, m1) map-get($margins, m2);
+  width: 100%;
+
+  &__text {
+    border: 0;
+    width: 100%;
+    border-bottom: 1px solid map-get($colors, green);
+    background-color: transparent;
+    outline: none;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+}

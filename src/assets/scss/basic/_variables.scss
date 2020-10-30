@@ -35,9 +35,12 @@ $margins: (
 $colors: (
   red: hsl(0, 69%, 33%),
   light: hsl(0, 0%, 85%),
+  green: hsl(120, 83%, 30%),
 );
 
 $colorsFilter: (
   red: invert(10%) sepia(51%) saturate(7287%) hue-rotate(354deg)
     brightness(89%) contrast(87%),
+  green: invert(30%) sepia(83%) saturate(1593%) hue-rotate(95deg)
+    brightness(93%) contrast(90%),
 );

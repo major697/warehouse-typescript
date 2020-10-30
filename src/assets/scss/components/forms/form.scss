@@ -1,0 +1,11 @@
+.form {
+  &__inputs {
+    display: flex;
+  }
+
+  &__btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: map-get($margins, m1);
+  }
+}

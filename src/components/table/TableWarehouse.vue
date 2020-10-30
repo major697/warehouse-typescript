@@ -5,13 +5,17 @@
         {{ item }}
       </th>
     </tr>
-    <tr v-for="(item, i) in tableBody" :key="item" class="item__body">
+    <tr
+      v-for="(item, i) in tableBody"
+      :key="item.id"
+      class="item__body"
+    >
       <td class="item__element">{{ i + 1 }}</td>
       <td class="item__element">{{ item.title }}</td>
       <td class="item__element">{{ item.author }}</td>
       <td class="item__element">{{ item.created }}</td>
       <td class="item__element">
-        <button class="item__element__buttons" @click="edit">
+        <button class="item__element__buttons" @click="edit(item)">
           Edit
         </button>
         <button class="item__element__buttons" @click="remove(i)">
@@ -37,10 +41,10 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['remove'],
+  emits: ['remove', 'update:editItem'],
   setup(props, context) {
-    const edit = () => {
-      console.log('edit')
+    const edit = (index: number) => {
+      context.emit('update:editItem', index)
     }
     const remove = (index: number): void => {
       context.emit('remove', index)
