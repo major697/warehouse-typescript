@@ -31,7 +31,8 @@ export default defineComponent({
     },
     value: {
       type: [String, Number],
-      required: true,
+      required: false,
+      default: () => null,
     },
   },
   emits: ['input'],

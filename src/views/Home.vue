@@ -3,18 +3,22 @@
     <div class="item__title">
       Warehouse project test typescript ;)
     </div>
+    <PrimaryButton title="Add item" @click="addItem" />
+
     <table-warehouse
       :table-head="tableHead"
       :table-body="getBooks"
       @remove="remove"
       @update:editItem="editItem = $event"
-      @update:statusEditModal="statusEditModal = true"
+      @update:statusAddEditModal="statusAddEditModal = true"
+      @update:createItemStatus="createItemStatus = $event"
     />
-    <EditForm
-      v-if="statusEditModal"
+    <AddEditForm
+      v-if="statusAddEditModal"
       :data="editItem"
-      @close="statusEditModal = false"
-      @update="updateItem"
+      @close="closeAddEditModal"
+      @save="updateItem"
+      @create-item="createItemStatus"
     />
   </div>
 </template>
@@ -22,17 +26,22 @@
 <script lang="ts">
 import { defineComponent, ref, defineAsyncComponent } from 'vue'
 import TableWarehouse from '@/components/table/TableWarehouse.vue'
-import books from '@/data/books'
+import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import { useStore } from '@/store'
+import { ActionTypes } from '@/store/action-types'
 
 export default defineComponent({
   name: 'Home',
   components: {
+    PrimaryButton,
     TableWarehouse,
-    EditForm: defineAsyncComponent(() =>
-      import('@/components/forms/EditForm.vue'),
+    AddEditForm: defineAsyncComponent(() =>
+      import('@/components/forms/AddEditForm.vue'),
     ),
   },
   setup() {
+    const store = useStore()
+
     const tableHead: Array<string> = [
       '#',
       'Title',
@@ -41,8 +50,11 @@ export default defineComponent({
       'Actions',
     ]
 
-    const getBooks = ref(books)
-    const statusEditModal = ref(false)
+    const getBooks = ref(store.state.items)
+
+    const statusAddEditModal = ref<boolean>(false)
+    const createItemStatus = ref<string>('create')
+
     const editItem = ref<{
       id: number
       title: string
@@ -53,30 +65,47 @@ export default defineComponent({
       author: '',
     })
 
+    const closeAddEditModal = (): void => {
+      statusAddEditModal.value = false
+      editItem.value = {
+        id: 0,
+        title: '',
+        author: '',
+      }
+    }
+
     const updateItem = (data: {
       id: number
       title: string
       author: string
     }) => {
       const { title, author } = data
+      console.log(title, author)
 
-      getBooks.value = getBooks.value.map(book => ({
-        ...book,
-        title: editItem.value.id === book.id ? title : book.title,
-        author: editItem.value.id === book.id ? author : book.author,
-      }))
-      statusEditModal.value = false
+      closeAddEditModal()
     }
 
     const remove = (value: number) => getBooks.value.splice(value, 1)
+
+    function addItem() {
+      store.dispatch(ActionTypes.StoreItem, {
+        id: 1,
+        title: 'test',
+        author: 'test test',
+        created: '00-22-1111',
+      })
+    }
 
     return {
       tableHead,
       getBooks,
       remove,
-      statusEditModal,
+      statusAddEditModal,
+      createItemStatus,
       editItem,
       updateItem,
+      closeAddEditModal,
+      addItem,
     }
   },
 })

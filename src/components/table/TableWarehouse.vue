@@ -41,11 +41,17 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['remove', 'update:editItem', 'update:statusEditModal'],
+  emits: [
+    'remove',
+    'update:editItem',
+    'update:statusAddEditModal',
+    'update:createItemStatus',
+  ],
   setup(props, context) {
     const edit = (index: number) => {
       context.emit('update:editItem', index)
-      context.emit('update:statusEditModal')
+      context.emit('update:statusAddEditModal')
+      context.emit('update:createItemStatus', 'update')
     }
     const remove = (index: number): void => {
       context.emit('remove', index)

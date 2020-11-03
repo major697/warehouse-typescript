@@ -28,13 +28,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import CenterModal from '@/components/modals/CenterModal.vue'
 import TextInput from '@/components/forms/inputs/TextInput.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 
 export default defineComponent({
-  name: 'EditForm',
+  name: 'AddEditForm',
   components: {
     CenterModal,
     TextInput,
@@ -43,18 +43,31 @@ export default defineComponent({
   props: {
     data: {
       type: Object,
-      required: true,
+      required: false,
+      default: () => null,
+    },
+    createItem: {
+      type: String,
+      default: '',
     },
   },
-  emits: ['save', 'update'],
+  emits: ['save'],
   setup(props, context) {
-    const title = ref<string>(props.data.title)
-    const author = ref<string>(props.data.author)
+    watch(
+      () => props.createItem,
+      (count, prevCount) => {
+        console.log(count, prevCount)
+      },
+    )
+
+    const title = ref<string | null>(props.data.title || null)
+    const author = ref<string | null>(props.data.author || null)
 
     const save = () => {
-      context.emit('update', {
+      context.emit('save', {
         title: title.value,
         author: author.value,
+        update: props.createItem,
       })
     }
 
